@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌤️</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="light-mode">
+    <div class="container mx-auto px-4 py-8">
+        <header class="flex flex-col md:flex-row justify-between items-center mb-8">
+            <h1 id="app-title" class="text-3xl font-bold dark:text-blue-400 mb-4 md:mb-0">
+                <i class="fas fa-cloud-sun mr-2"></i>Weather Dashboard
+            </h1>
+            <div class="flex items-center space-x-4">
+
+                <button id="theme-toggle"
+                    class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors shadow-sm">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:inline"></i>
+                </button>
+
+                <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 shadow-sm">
+                    <button id="celsius-btn"
+                        class="px-4 py-2 rounded-lg bg-white dark:bg-slate-700 font-medium text-slate-900 dark:text-slate-100 shadow-sm transition-colors">°C</button>
+                    <button id="fahrenheit-btn"
+                        class="px-4 py-2 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">°F</button>
+                </div>
+
+                <button id="refresh-btn"
+                    class="p-3 rounded-xl bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white shadow-sm transition-colors">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+        </header>
+
+
+        <section class="mb-8">
+            <div class="relative max-w-lg mx-auto">
+                <input type="text" id="search-input" placeholder="Cari kota..."
+                    class="w-full p-4 pl-12 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent shadow-sm transition-colors">
+                <i
+                    class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500"></i>
+                <div id="autocomplete-results"
+                    class="absolute z-10 w-full mt-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl shadow-lg hidden max-h-60 overflow-y-auto custom-scrollbar">
+                </div>
+            </div>
+
+
+            <div id="favorite-cities" class="flex flex-wrap gap-2 mt-4 justify-center">
+
+            </div>
+        </section>
+
+
+        <section class="mb-12">
+            <h2 id="current-weather-title" class="text-2xl font-semibold text-slate-800 dark:text-slate-200 mb-4">Cuaca Saat Ini</h2>
+            <div id="current-weather"
+                class="bg-gradient-to-br from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 text-white rounded-2xl p-6 shadow-xl weather-card">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="text-center md:text-left mb-4 md:mb-0">
+                        <div id="location" class="text-2xl font-bold">Memuat lokasi...</div>
+                        <div id="timestamp" class="text-sm opacity-90">-</div>
+                        <div id="weather-condition" class="text-xl mt-2 font-medium">Mengambil kondisi cuaca...</div>
+                    </div>
+                    <div class="flex items-center">
+                        <div id="weather-icon" class="text-6xl mr-4">--</div>
+                        <div id="temperature" class="text-5xl font-bold">--</div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                    <div class="bg-white bg-opacity-20 rounded-xl p-4 text-center backdrop-blur-sm">
+                        <div id="humidity-label" class="text-sm opacity-90">Kelembaban</div>
+                        <div id="humidity" class="text-xl font-semibold">--</div>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-xl p-4 text-center backdrop-blur-sm">
+                        <div id="wind-label" class="text-sm opacity-90">Kecepatan Angin</div>
+                        <div id="wind-speed" class="text-xl font-semibold">--</div>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-xl p-4 text-center backdrop-blur-sm">
+                        <div id="pressure-label" class="text-sm opacity-90">Tekanan</div>
+                        <div id="pressure" class="text-xl font-semibold">--</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="mb-12">
+            <h2 id="forecast-title" class="text-2xl font-semibold text-slate-800 dark:text-slate-200 mb-4">Prakiraan 5 Hari</h2>
+            <div id="forecast" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            </div>
+        </section>
+
+        <div id="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 flex flex-col items-center shadow-xl">
+                <div class="loading mb-4"></div>
+                <p id="loading-message" class="text-lg text-slate-800 dark:text-slate-200">Memuat data cuaca...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
