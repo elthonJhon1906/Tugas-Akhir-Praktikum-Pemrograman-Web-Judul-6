@@ -24,7 +24,7 @@ Aplikasi memanfaatkan API terbuka dari **[Open‑Meteo](https://open-meteo.com/)
 
 ## Tampilan Preview
 
-`![Preview](image.png)`
+![Tampilan Weather Dashboard](./image.png)
 
 ## Cara Menjalankan
 
